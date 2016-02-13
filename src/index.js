@@ -17,36 +17,34 @@ module.exports = function(options, callback){
       postBody = isPost ? JSON.stringify(options.body) : null,
       contentLength = !!postBody ? Buffer.byteLength(postBody) : null,
       timeout = options.timeout || 5,
-      setHeader = function(k, v){ requestData.headers[k] = v; };
+      setHeader = function(v, k){ requestData.headers[k] = v; };
 
   var respond = function(statusCode, body){
     body = body.toString('utf-8');
 
-    if(statusCode >= 400){
-      callback(statusCode);
-    } else if(isJson){ 
+    var error = statusCode !== 200 ? statusCode : null,
+        response;
+
+    if(isJson){
       try {
-        callback(null, JSON.parse(body));
+        callback(error, JSON.parse(body));
       } catch(e){
         return callback('json parsing error');
       }
     } else {
-      callback(null, body);
+      callback(error, body);
     }
   };
 
   requestData.headers = {};
   requestData.method = method;
 
-  _.each(headers, function(header, headerName){
-    setHeader(headerName, header);
-  });
-
-  setHeader('accept-encoding', 'gzip');
+  _.each(headers, setHeader);
+  setHeader('gzip', 'accept-encoding');
 
   if(isPost){
-    setHeader('content-length', contentLength);
-    setHeader('content-type', 'application/json');
+    setHeader(contentLength, 'content-length');
+    setHeader('application/json', 'content-type');
   }
   
   var timer = setTimeout(function() {

@@ -95,7 +95,8 @@ describe('minimal-request', function(){
   describe('when requesting route with status!=200', function(){
     before(function(done){
       initialise({
-        url: 'http://localhost:3006/getData404'
+        url: 'http://localhost:3006/getData404',
+        json: true
       }, next(done));
     });
 
@@ -105,8 +106,8 @@ describe('minimal-request', function(){
       expect(err).to.be.equal(404);
     });
 
-    it('should not care about providing a response', function(){
-      expect(res).to.be.empty;
+    it('should provide a response', function(){
+      expect(res).to.eql([]);
     });
   });
 

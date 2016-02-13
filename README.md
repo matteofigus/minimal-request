@@ -7,7 +7,7 @@ A minimal opinionated dependency-free request client for node.js.
 
 * It supports just GET and POST
 * It asks for gzip by default
-* When response status is not 200, it returns an error with the status code. If not, it just gives you back the response
+* When response status is not 200, it returns an error with the status code + the response.
 * Default timeout is 5 seconds. When request timesout, error is 'timeout'
 
 ```js
