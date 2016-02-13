@@ -1,0 +1,28 @@
+{
+  "name": "minimal-request",
+  "version": "1.0.0",
+  "description": "Like request, but just what I need for doing simple Get/post reqs",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./node_modules/.bin/mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matteofigus/minimal-request"
+  },
+  "keywords": [
+    "request",
+    "minimal"
+  ],
+  "author": "Matteo Figus",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/matteofigus/minimal-request/issues"
+  },
+  "homepage": "https://github.com/matteofigus/minimal-request",
+  "devDependencies": {
+    "chai": "3.5.0",
+    "http-test-servers": "1.0.0",
+    "mocha": "2.4.5"
+  }
+}
