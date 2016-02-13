@@ -18,7 +18,7 @@ request({
   method: 'post',
   body: { hi: 'hello' },
   json: true,
-  headers: { accept-language: 'en-GB' },
+  headers: { 'accept-language': 'en-GB' },
   timeout: 5 // seconds
 }, function(err, res){
   console.log(err);
