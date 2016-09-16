@@ -46,13 +46,6 @@ module.exports = function(options, callback){
     setHeader(contentLength, 'content-length');
     setHeader('application/json', 'content-type');
   }
-  
-  var timer = setTimeout(function() {
-    if(!callbackDone){
-      callbackDone = true;
-      return callback('timeout');
-    }
-  }, 1000 * timeout);
 
   var req = require(httpProtocol).request(requestData).on('response', function(response) {
     
@@ -63,7 +56,6 @@ module.exports = function(options, callback){
     }).on('end', function(){
       body = Buffer.concat(body);
       if(!callbackDone){
-        clearTimeout(timer);
         callbackDone = true;
 
         if(response.headers['content-encoding'] === 'gzip'){
@@ -78,9 +70,15 @@ module.exports = function(options, callback){
     });
   }).on('error', function(e){
     if(!callbackDone){
-      clearTimeout(timer);
       callbackDone = true;
       callback(e);
+    }
+  });
+
+  req.setTimeout(1000 * timeout, function(){
+    if(!callbackDone){
+      callbackDone = true;
+      callback('timeout');
     }
   });
 
