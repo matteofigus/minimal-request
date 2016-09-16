@@ -73,7 +73,9 @@ module.exports = function(options, callback){
       callbackDone = true;
       callback(e);
     }
-  }).setTimeout(1000 * timeout, function(){
+  });
+
+  req.setTimeout(1000 * timeout, function(){
     if(!callbackDone){
       callbackDone = true;
       callback('timeout');
