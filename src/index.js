@@ -10,7 +10,7 @@ module.exports = function(options, callback){
   var callbackDone = false,
       httpProtocol = options.url.indexOf('https') === 0 ? 'https' : 'http',
       requestData = url.parse(options.url),
-      method = options.method || 'get',
+      method = (options.method || 'get').toLowerCase(),
       isJson = options.json || false,
       headers = options.headers || {},
       isPost = method === 'post',

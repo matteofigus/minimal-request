@@ -132,6 +132,27 @@ describe('minimal-request', function(){
     });
   });
 
+  describe('when posting to a status=200', function(){
+    before(function(done){
+      initialise({
+        url: 'http://localhost:3006/postData200',
+        method: 'POST',
+        body: { hi: 'name' },
+        json: true
+      }, next(done));
+    });
+
+    after(cleanup);
+
+    it('should get parsed response', function(){
+      expect(res).to.eql({hi: 'name'});
+    });
+
+    it('should not get any error', function(){
+      expect(err).to.be.null;
+    });
+  });
+
   describe('when posting to a slow route with timeout set', function(){
     before(function(done){
       initialise({
