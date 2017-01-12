@@ -20,12 +20,15 @@ request({
   json: true,
   headers: { 'accept-language': 'en-GB' },
   timeout: 5 // seconds
-}, function(err, res){
+}, function(err, res, details){
   console.log(err);
   // -> something like 404 or null
 
   console.log(res);
   // -> Something like {hi: 1234}
+
+  console.log(details);
+  // -> Something like { statusCode: 200, headers: { ... }}
 });
 ```
 
