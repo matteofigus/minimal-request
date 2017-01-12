@@ -1,6 +1,6 @@
 {
   "name": "minimal-request",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "Like request, but just what I need for doing simple Get/post reqs",
   "main": "index.js",
   "scripts": {
