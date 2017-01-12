@@ -19,20 +19,20 @@ module.exports = function(options, callback){
       timeout = options.timeout || 5,
       setHeader = function(v, k){ requestData.headers[k] = v; };
 
-  var respond = function(statusCode, body){
+  var respond = function(body, details){
     body = body.toString('utf-8');
 
-    var error = statusCode !== 200 ? statusCode : null,
+    var error = details.response.statusCode !== 200 ? details.response.statusCode : null,
         response;
 
     if(isJson){
       try {
-        callback(error, JSON.parse(body));
+        callback(error, JSON.parse(body), details);
       } catch(e){
-        return callback('json parsing error');
+        return callback('json parsing error', null, details);
       }
     } else {
-      callback(error, body);
+      callback(error, body, details);
     }
   };
 
@@ -48,8 +48,14 @@ module.exports = function(options, callback){
   }
 
   var req = require(httpProtocol).request(requestData).on('response', function(response) {
-    
+
     var body = [];
+    var details = {
+      response: {
+        headers: response.headers,
+        statusCode: response.statusCode
+      }
+    };
 
     response.on('data', function(chunk){
       body.push(chunk);
@@ -61,10 +67,10 @@ module.exports = function(options, callback){
         if(response.headers['content-encoding'] === 'gzip'){
           zlib.gunzip(body, function(err, dezipped) {
             if(!!err){ return callback(err); }
-            respond(response.statusCode, dezipped);
+            respond(dezipped, details);
           });
         } else {
-          respond(response.statusCode, body);
+          respond(body, details);
         }
       }
     });

@@ -6,7 +6,7 @@ var TestServers = require('http-test-servers');
 describe('minimal-request', function(){
 
   var request = require('../');
-  var testServers, err, res;
+  var testServers, err, res, details;
 
   var initialise = function(opts, done){
     var routes = {
@@ -27,10 +27,18 @@ describe('minimal-request', function(){
         respondWithBody: true
       },
       route4: {
-        route: 'postData500',
+        route: '/postData500',
         method: 'post',
         statusCode: 500,
         respondWithBody: true
+      },
+      route5: {
+        route: '/headerData',
+        statusCode: 200,
+        response: { ok: true },
+        headers: {
+          myheader: 1234567890
+        }
       }
     };
 
@@ -48,9 +56,10 @@ describe('minimal-request', function(){
   var cleanup = function(done){ testServers.kill(done); };
 
   var next = function(done){
-    return function(e, r){
+    return function(e, r, d){
       err = e;
       res = r;
+      details = d;
       done();
     };
   };
@@ -150,6 +159,32 @@ describe('minimal-request', function(){
 
     it('should not get any error', function(){
       expect(err).to.be.null;
+    });
+  });
+
+  describe('when getting to a route with response headers', function(){
+    before(function(done){
+      initialise({
+        url: 'http://localhost:3006/headerData',
+        method: 'GET',
+        body: { hi: 'name' },
+        json: true
+      }, next(done));
+    });
+
+    after(cleanup);
+
+    it('should get parsed response', function(){
+      expect(res).to.eql({ok: true});
+    });
+
+    it('should not get any error', function(){
+      expect(err).to.be.null;
+    });
+
+    it('should get the extra details', function(){
+      expect(details.response.statusCode).to.equal(200);
+      expect(details.response.headers.myheader).to.equal('1234567890');
     });
   });
 
