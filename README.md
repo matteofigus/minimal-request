@@ -1,6 +1,8 @@
 minimal-request [![Build Status](https://secure.travis-ci.org/matteofigus/minimal-request.png?branch=master)](http://travis-ci.org/matteofigus/minimal-request)
 ===============
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/matteofigus/minimal-request.svg)](https://greenkeeper.io/)
+
 [![NPM](https://nodei.co/npm/minimal-request.png?downloads=true)](https://npmjs.org/package/minimal-request)
 
 A minimal opinionated dependency-free request client for node.js. 
